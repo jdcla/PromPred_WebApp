@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block scripts %}
+    {{super()}}
+    <script type="text/javascript">
+        $('.confirmation').on('click', function () {
+            return confirm('This will permanently delete the selected library!');
+        });
+    </script>
+{% endblock %}
+
+{% block title %}Promoter Libraries{% endblock %}
+
+{% block page_content %}
+
+<div class="page-header">
+    <h1>My Libraries</h1>
+</div>
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+        <tbody>
+            {% for library in libraries %}
+            <tr class="hover">
+                <td class="col-md-1">
+                    <h4><b>{{ loop.index }}</b></h4>
+                </td>
+                <td class="col-md-3">
+                    {{ library.name }}
+                </td>
+                <td class="col-md-4">
+                    <b>Status:</b> {{ library.status }}
+                </td>
+                <td class="col-md-4" style="text-align:right">
+                    <a class="btn btn-info btn-md clickable" data-toggle="collapse" data-target="#{{ library.id }}">
+                        <span class="glyphicon glyphicon-pencil"></span> Metadata
+                    </a>
+                    <a class="btn btn-info btn-md" href="{{ url_for('main.library') }}/{{ library.id }}">
+                        <span class="glyphicon glyphicon-eye-open"></span> View Promoters
+                    </a>
+                    <a class="btn btn-danger btn-md confirmation" href="{{ url_for('main.library') }}/delete/{{ library.id }}">
+                        <span class="glyphicon glyphicon-remove"></span> Remove
+                    </a>
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <div id="{{ library.id }}" class="collapse">
+                        <p><b>Created on: </b>{{ moment(library.timestamp).format('L') }}</p>
+                        <p><b>Blueprint: </b>{{ library.plan.body }}</p>
+                        {% if library.status != "complete" %}
+                        <a class="btn btn-info btn-md disabled" style="text-align:right" href="{{ url_for('main.index') }}">
+                            <span class="glyphicon glyphicon-download"></span> Download to csv
+                        </a>
+                        {% else %}
+                        <a class="btn btn-info btn-md " style="text-align:right" href="{{ url_for('main.index') }}">
+                            <span class="glyphicon glyphicon-download"></span> Download to csv
+                        </a>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<hr>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Promoter Library Creation
+    </div>
+    <div class="panel-body">
+    {% include "snippets/lib_creation.html" %}
+    </div>
+</div>
+<!-- <a href="{{ url_for('main.index') }}"-->
+{% endblock %}

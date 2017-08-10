@@ -1,0 +1,55 @@
+.tooltip_templates { display: none; }
+
+.table > tbody > tr > td {
+    vertical-align: middle;
+}
+
+.table > tbody > tr:not(.hover) {
+    background-color: white;
+}
+
+ul.posts {
+    list-style:none
+}
+
+html, body {
+    min-height=100%;
+    margin= 0;
+}
+
+#main {
+    min-height: 92% ;
+    overflow: auto;
+    padding-bottom:115px;
+    }
+
+.footer {
+  position: relative;
+  margin-top: -115px;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 105px;
+  clear:both;
+  background-color: white;
+}
+
+.select:hidden {
+  color: gray;
+}
+
+div.post-date {
+    float: right;
+}
+div.post-author {
+    font-weight: bold;
+}
+div.post-thumbnail {
+    position: absolute;
+}
+div.post-content {
+    margin-left: 48px;
+    min-height: 48px;
+}
+div.post-footer {
+    text-align: right;
+}

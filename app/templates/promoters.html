@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+    {{super()}}
+    <script type="text/javascript">
+        $('.confirmation').on('click', function () {
+            return confirm('This will permanently delete the selected library!');
+        });
+        $(".open-button").on("click", function() {
+        var id = $(this).attr('id');
+        $('#'+id+'.collapse').slideToggle();return false;
+        });
+    </script>
+{% endblock %}
+
+{% block title %}Library: {{ library.name }}{% endblock %}
+
+{% block page_content %}
+
+<div class="page-header">
+        <h2>Library: {{ library.name }}</h2>
+</div>
+{% if library.status != "complete" %}
+<div class="alert alert-danger">
+    <h5>There are no promoter sequences yet! The library is {{ library.status }}.</h5>
+</div>
+
+{% else %}
+
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+        <tbody>
+            {% for sequence in sequences %}
+            <tr id="{{ sequence.id }}" class="collapse">
+                <td colspan="6">
+                    <div id="{{ sequence.id }}" class="collapse">
+                        <p><b>TODO: insert neighbouring reference promoters</b></p>
+                    </div>
+                </td>
+            </tr id="{{ sequence.id }}" class="collapse">
+            <tr class="hover">
+                <td class="col-md-2">
+                    <h4><b>{{ loop.index }}</b></h4>
+                </td>
+                <td class="col-md-8">
+                    {{sequence.body}}
+                </td>
+                <td class="col-md-1">
+                    {{sequence.strength}}
+                </td>
+                <td class="col-md-1">
+                    <button id="{{ sequence.id }}" class="btn btn-info btn-md clickable open-button" type="button">
+                        <span class="glyphicon glyphicon-pencil"></span> Metadata
+                    </button>
+                </td>
+
+            </tr>
+            <tr id="{{ sequence.id }}" class="collapse">
+                <td colspan="6">
+                    <div id="{{ sequence.id }}" class="collapse">
+                        <p><b>TODO: insert neighbouring reference promoters</b></p>
+                    </div>
+                </td>
+            </tr id="{{ sequence.id }}" class="collapse">
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div style="text-align:right; padding:10px">
+    <a class="btn btn-info btn-md" style="text-align:right" href="{{ url_for('main.index') }}">
+        <span class="glyphicon glyphicon-download"></span> Download to csv
+    </a>
+    <a class="btn btn-danger btn-md confirmation" href="{{ url_for('main.library') }}/delete/{{ library.id }}">
+        <span class="glyphicon glyphicon-remove"></span> Remove Library
+    </a>
+</div>
+{% endif %}
+
+
+{% endblock %}

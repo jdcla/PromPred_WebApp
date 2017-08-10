@@ -1,0 +1,63 @@
+
+<style>
+    select:invalid { color: gray; }
+    select option {color:black }
+</style>
+
+<form class="form form-horizontal" method="post">
+    <div class="form-group {% if seq_form.errors %} has-error{% endif -%}
+        {%- if seq_form.name_seq.flags.required %} required{% endif -%}">
+        {{ seq_form.hidden_tag() }}
+        {{ wtf.form_errors(seq_form, hiddens='only') }}
+            <label class="control-label col-sm-2" for="seq">New Sequence:</label>
+            <div class="col-sm-3" id="seq">
+                {{ seq_form.name_seq(class="form-control", placeholder="Name") }}
+                {%- for error in seq_form.name_seq.errors %}
+                <p class="help-block">{{error}}</p>
+                {%- endfor %}
+            </div>
+            <div class="col-sm-3" id="seq">
+                <select class="form-control" id="library", name="library" required>
+                    <option value="" disabled selected hidden>Library</option>
+                    {% for library in libraries %}
+                    <option>{{ library.name }}</option>
+                    {% endfor %}
+                </select>
+                {%- for error in seq_form.library.errors %}
+                <p class="help-block">{{error}}</p>
+                {%- endfor %}
+            </div>
+            <div class="col-sm-3" id="seq">
+                <select class="form-control" id="plan" name="plan" required>
+                    <option value="" disabled selected hidden>Blueprint</option>
+                    {% for plan in plans %}
+                    <option value="{{ plan.body }}">{{ plan.name }}</option>
+                    {% endfor %}
+                </select>
+                {%- for error in seq_form.plan.errors %}
+                <p class="help-block">{{ error }}</p>
+                {%- endfor %}
+            </div>
+
+        <div class="col-sm-12" style="margin-top:20px">
+            <div class="col-sm-3">
+
+                <select class="form-control" id="ref_library"  name="ref_library" required>
+                    <option value="" disabled selected hidden>Reference Library</option>
+                    {% for ref_library in ref_libraries %}
+                    <option>{{ ref_library.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <select class="form-control" id="ref_sequence" name="ref_sequence" required>
+                    <option value="" disabled selected hidden>Range</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+            {{wtf.form_field(seq_form.submit_seq) }}
+            </div>
+        </div>
+    </div>
+
+</form>

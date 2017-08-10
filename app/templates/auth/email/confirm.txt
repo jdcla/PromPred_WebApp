@@ -1,0 +1,11 @@
+Dear {{ user.username }},
+
+Welcome to PromPred!
+
+To confirm you account, please click on the following link:
+
+{{ url_for('auth.confirm', token=token, _external=True) }}
+
+May the force be with you,
+
+The Prompred Team

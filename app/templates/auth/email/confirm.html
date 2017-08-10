@@ -1,0 +1,11 @@
+<p>Dear {{ user.username }},</p>
+
+<p>Welcome to PromPred!</p>
+
+<p>To confirm you account, please click on the following link:</p>
+
+<p>{{ url_for('auth.confirm', token=token, _external=True) }}</p>
+
+<p>May the force be with you,</p>
+
+<p>The Prompred Team</p>

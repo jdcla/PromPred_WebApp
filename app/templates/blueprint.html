@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block scripts %}
+    {{super()}}
+    <script type="text/javascript">
+        $('.confirmation').on('click', function () {
+            return confirm('This will permanently delete the selected blueprint!');
+        });
+    </script>
+{% endblock %}
+
+{% block title %}Blueprints{% endblock %}
+
+{% block page_content %}
+
+<div class="page-header">
+    <h1>My Blueprints</h1>
+</div>
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+        <tbody>
+            {% for plan in plans %}
+            <tr class="hover">
+                <td class="col-md-1">
+                    <h4><b>{{ loop.index }}</b></h4>
+                </td>
+                <td class="col-md-2">
+                    {{ plan.name }}
+                </td>
+                <td class="col-md-3">
+                    <div class="post-date"><small>Created on:</small> {{ moment(plan.timestamp).format('L') }}</div>
+                </td>
+                <td class="col-md-4">
+                    <b><small>{{ plan.body[:15] }}<u>{{ plan.body[15:21] }}</u>{{ plan.body[21:38] }}<u>{{ plan.body[38:44] }}</u>{{ plan.body[44:] }}</small></b>
+                </td>
+                <td class="col-md-2" style="text-align:right">
+                    <a class="btn btn-danger btn-md confirmation" href="{{ url_for('main.blueprint') }}/delete/{{ plan.id }}">
+                        <span class="glyphicon glyphicon-remove"></span> Remove
+                    </a>
+                </td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<hr>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Promoter Blueprint Creation
+    </div>
+    <div class="panel-body">
+    {% include "snippets/plan_creation.html" %}
+    </div>
+</div>
+<div class="tooltip_templates">
+    <span id="tooltip_content">
+        <div style="float:left; padding:10pt">
+            <ul class="list-unstyled">
+                <li> th: 0.9 (default)</li>
+                <li><b>a</b> : A (<b>th</b>) </li>
+                <li><b>t</b> : T (<b>th</b>) </li>
+                <li><b>c</b> : C (<b>th</b>) </li>
+                <li><b>g</b> : G (<b>th</b>) </li>
+            </ul>
+        </div>
+        <div style="float:left;padding:10pt">
+            <ul class="list-unstyled">
+                <li><b>R</b> : G/A </li>
+                <li><b>Y</b> : T/C </li>
+                <li><b>K</b> : G/T </li>
+                <li><b>M</b> : A/C </li>
+                <li><b>S</b> : G/C </li>
+                <li><b>W</b> : A/T </li>
+            </ul>
+        </div>
+        <div style="float:left;padding:10pt">
+            <ul class="list-unstyled">
+                <li><b>B</b> : G/T/C </li>
+                <li><b>D</b> : G/A/T </li>
+                <li><b>H</b> : A/C/T </li>
+                <li><b>V</b> : G/C/A </li>
+                <li><b>N</b> : A/G/C/T </li>
+            </ul>
+        </div>
+    </span>
+</div>
+<!-- <a href="{{ url_for('main.index') }}"-->
+{% endblock %}

@@ -1,0 +1,122 @@
+{% extends "bootstrap/my_base.html" %}
+
+{% block title %}PromPred{% endblock %}
+
+{% block scripts %}
+	{{super()}}
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="{{ url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+
+	<link rel="stylesheet" type="text/css" href="static/tooltipster/dist/css/tooltipster.bundle.min.css" />
+	<script type=text/javascript src="static/tooltipster/dist/js/tooltipster.bundle.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			$('.tooltip-custom').tooltipster();
+		});
+	</script>
+    <script>
+    $('#plan').keyup(function () {
+      var len = $(this).val().length;
+      $('#charNum').text(len + '/50');
+    });
+    </script>
+
+    <script>
+    var locations = {{ ref_dict|safe }}
+
+    var $locations = $('#location');
+    $('#ref_library').change(function () {
+        var ref_library = $(this).val(), lcns = locations[ref_library] || [];
+
+        var html = $.map(lcns, function(lcn){
+            return '<option value="' + lcn + '">' + lcn + '</option>'
+        }).join('');
+        $("#ref_sequence").html(html)
+    });
+    </script>
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet"
+	href="{{url_for('static', filename='mystyle.css')}}">
+{% endblock %}
+
+{% block navbar %}
+
+<div class="navbar navbar-inverse" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle"
+				data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/">PromPred</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a href="/">Home</a></li>
+				{% if current_user.is_authenticated %}
+				<li><a href="/library">My Libraries</a></li>
+				<li><a href="/blueprint">My Blueprints</a></li>
+				{% endif %}
+                <li><a href="/about">About</a></li>
+
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				{% if current_user.is_authenticated %}
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<b>{{current_user.username}}</b><b class="carret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="{{ url_for('auth.reset') }}">Change Password</a></li>
+						<li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+					</ul>
+				</li>
+				{% else %}
+				<li><a href="{{ url_for('auth.login') }}">Sign In</a></li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="main" class="container bg-silver">
+	{% for message in get_flashed_messages() %}
+	<div class="alert alert-warning">
+		<button type="buttion" class="close" data-dismiss="alert">&times;</button>
+		{{ message }}
+	</div>
+	{% endfor %}
+
+	{% block page_content %}{% endblock %}
+</div>
+{% block footer %}
+<div class="footer">
+<footer>
+
+<hr style="margin-top:4px; margin-bottom:4px">
+<center>
+<a href="https://www.ugent.be">
+<img src="/static/img/ugent_logo.png" class="img-rounded" style="height:90px;padding:10px">
+</a>
+<a href="https://www.ugent.be/bw/en">
+<img src="/static/img/fbe_logo.jpg" class="img-rounded" style="height:90px;padding:10px">		
+</a>
+<a href="http://www.kermit.ugent.be">
+<img src="/static/img/kermit_logo.png" class="img-rounded" style="height:90px;padding:10px">		
+</a>
+<a href="http://www.csb.ugent.be">
+<img src="/static/img/csb_logo.png" class="img-rounded" style="height:90px;padding:10px">		
+</a>
+</center>
+</footer>
+</div>
+{% endblock %}
+{% endblock %}

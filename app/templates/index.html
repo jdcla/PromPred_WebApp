@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block scripts %}
+    {{super()}}
+
+{% endblock %}
+{% import "_macros.html" as macros %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}PromPred{% endblock %}
+
+{% block page_content %}
+{% if current_user.is_authenticated %}
+
+<div>
+	<div class="panel panel-default">
+		<div class="panel-heading clearfix">
+
+            Promoter Library Creation Tool
+
+            <a class="btn btn-info btn-sm float-right clickable" style="float:right" data-toggle="collapse" data-target="#panel">
+                        <span class="glyphicon glyphicon-pencil"></span> Toggle
+            </a>
+		</div>
+		<div id="panel" class="panel-body collapse in">
+            {% include "snippets/lib_creation.html" %}
+            <hr>
+			{% include "snippets/plan_creation.html" %}
+            <hr>
+			{% include "snippets/seq_creation.html" %}
+		</div>
+	</div>
+</div>
+{% endif %}	
+<h2>News</h2>
+<hr>
+<ul class="posts">
+    {% for post in posts %}
+    <li class="post">
+        <div class="col-sm-12">
+            <div class="col-sm-8">
+                <h4>{{ post.title }}</h4>
+            </div>
+            <div class="col-sm-2" style="text-align:right">
+                posted by {{ post.creator_post.username }}
+            </div>
+            <div class="col-sm-2"  style="text-align:right">
+                {{ moment(post.timestamp).fromNow() }}
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="col-sm-8" style="margin-bottom:20px">
+                {{ post.body }}
+            </div>
+        </div>
+    </li>
+    <hr>
+    {% endfor %}
+</ul>
+
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.index') }}
+</div>
+{% endif %}
+
+<div>
+    {% if current_user.can(Permission.WRITE_POSTS) %}
+    <hr>
+    {{ wtf.quick_form(post_form) }}
+    {% endif %}
+
+</div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,18 @@
+<form class="form form-horizontal" method="post">
+    <div class="form-group {% if lib_form.name_lib.errors %} has-error{% endif -%}
+             {%- if lib_form.name_lib.flags.required %} required{% endif -%}">
+        {{ lib_form.hidden_tag() }}
+        {{ wtf.form_errors(lib_form, hiddens='only') }}
+        <label class="control-label col-sm-2" for="lib">New Library:</label>
+        <div class="col-sm-8" id="lib">
+            {{ lib_form.name_lib(class="form-control", placeholder="Name") }}
+            {%- for error in lib_form.name_lib.errors %}
+            <p class="help-block">{{error}}</p>
+            {%- endfor %}
+        </div>
+
+        <div class="col-sm-2">
+            {{wtf.form_field(lib_form.submit_lib) }}
+        </div>
+    </div>
+</form>

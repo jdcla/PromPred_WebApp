@@ -1,0 +1,34 @@
+
+
+<form class="form form-horizontal" method="post">
+    <div class="form-group {% if plan_form.name_plan.errors %} has-error{% endif -%}
+             {%- if plan_form.name_plan.flags.required %} required{% endif -%}">
+        {{ plan_form.hidden_tag() }}
+        <label class="control-label col-sm-2">New Blueprint:</label>
+        <div class="col-sm-2">
+            {{ plan_form.name_plan(class="form-control", placeholder="Name") }}
+            {%- for error in plan_form.name_plan.errors %}
+            <p class="help-block">{{error}}</p>
+            {%- endfor %}
+        </div>
+        <div class="col-sm-6">
+            <div class="input-group">
+                <input class="form-control" id="plan" name="plan" placeholder="Blueprint" type="text" value="">
+                    <a class="input-group-addon" id="charNum"></a>
+                    <a class="tooltip-custom input-group-addon" data-tooltip-content="#tooltip_content">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                    </a>
+
+                </input>
+            </div>
+                {%- for error in plan_form.plan.errors %}
+                <p class="help-block">{{error}}</p>
+                {%- endfor %}
+
+        </div>
+
+        <div class="col-sm-2">
+            {{wtf.form_field(plan_form.submit_plan) }}
+        </div>
+    </div>
+</form>
